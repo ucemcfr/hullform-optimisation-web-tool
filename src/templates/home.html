@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <meta content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0' name='viewport'>
+
+  <title>Ship Parameter Exploration Tool</title>
+
+  <script type='text/javascript' src="{{ url_for('static', filename='libraries/d3/d3.min.js') }}"></script>
+   <script type='text/javascript' src="{{ url_for('static', filename='libraries/crossfilter/crossfilter.min.js') }}"></script>
+   <script type='text/javascript' src="{{ url_for('static', filename='libraries/dc/dc.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/jquery/jquery-2.2.3.min.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/bootstrap/js/bootstrap.min.js') }}"></script>
+  <link href="{{ url_for('static', filename='libraries/bootstrap/css/bootstrap.min.css') }}" rel='stylesheet' type='text/css'>
+  <link href="{{ url_for('static', filename='libraries/dc/dc.css') }}" rel='stylesheet' type='text/css'>
+
+	<style>
+		.axis path,
+		.axis line {
+		fill: none;
+		stroke: black;
+		shape-rendering: crispEdges;
+		}
+
+		.axis text {
+		font-family: sans-serif;
+		font-size: 11px;
+		}
+		</style>
+<style type="text/css">
+	h4 {
+		float: centre;
+		}
+
+	h4 span {
+		font-size:14px;
+		font-weight:normal;
+		}
+
+	h2 {
+		float: right;
+		}
+
+	h2 span {
+		font-size: 14px;
+		font-weight: normal;
+		}
+
+</style>
+</head>
+<body>
+<div class="container page-form">
+    <form id="parameter-specification" action="/calculate" method="post">
+        <div class="form-group">
+            <label for="lo_lwl">Low LWL</label>
+            <input type="number" id="lo_lwl" class="form-control" name="lo_lwl" value="200">
+        </div>
+
+        <div class="form-group">
+            <label for="hi_lwl">High LWL</label>
+            <input type="number" id="hi_lwl" class="form-control" name="hi_lwl" value="210">
+        </div>
+
+        <div class="form-group">
+            <label for="lo_b">Low beam</label>
+            <input type="number" id="lo_b" class="form-control" name="lo_b" value="30">
+        </div>
+
+        <div class="form-group">
+            <label for="hi_b">High beam</label>
+            <input type="number" id="hi_b" class="form-control" name="hi_b" value="35">
+        </div>
+
+        <div class="form-group">
+            <label for="lo_t">Low draft</label>
+            <input type="number" id="lo_t" class="form-control" name="lo_t" value="8">
+        </div>
+
+        <div class="form-group">
+            <label for="hi_t">High draft (metres)</label>
+            <input type="number" id="hi_t" class="form-control" name="hi_t" value="12">
+        </div>
+
+        <div class="form-group">
+            <label for="lo_vol_disp">Min volumetric displacement (metres cubed)</label>
+            <input type="number" id="lo_vol_disp" class="form-control" name="lo_vol_disp" value="35000">
+        </div>
+
+        <div class="form-group">
+            <label for="hi_vol_disp">Max volumetric displacement (metres cubed)</label>
+            <input type="number" id="hi_vol_disp" class="form-control" name="hi_vol_disp" value="40000">
+        </div>
+
+        <div class="form-group">
+            <label for="lo_cwp">Min coefficient of waterplane area</label>
+            <input type="number" id="lo_cwp" class="form-control" name="lo_cwp" value="0.6">
+        </div>
+
+        <div class="form-group">
+            <label for="hi_cwp">Max coefficient of waterplane area</label>
+            <input type="number" id="hi_cwp" class="form-control" name="hi_cwp" value="0.9">
+        </div>
+
+
+        <div class="form-group">
+            <label for="pop_size">Popsize</label>
+            <input type="number" id="pop_size" class="form-control" name="pop_size" value="100">
+        </div>
+
+        <div class="form-group">
+            <label for="max_gen">Generations</label>
+            <input type="number" id="max_gen" class="form-control" name="max_gen" value="50">
+        </div>
+
+        <button type="submit" class="btn btn-success">Optimise</button>
+    </form>
+</div>
+</body>
+</html>

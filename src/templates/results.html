@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <meta content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0' name='viewport'>
+
+  <title>Ship Parameter Exploration Tool</title>
+
+  <script type='text/javascript' src="{{ url_for('static', filename='libraries/d3/d3.min.js') }}"></script>
+   <script type='text/javascript' src="{{ url_for('static', filename='libraries/crossfilter/crossfilter.min.js') }}"></script>
+   <script type='text/javascript' src="{{ url_for('static', filename='libraries/dc/dc.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/jquery/jquery-2.2.3.min.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/bootstrap/js/bootstrap.min.js') }}"></script>
+  <link href="{{ url_for('static', filename='libraries/bootstrap/css/bootstrap.min.css') }}" rel='stylesheet' type='text/css'>
+  <link href="{{ url_for('static', filename='libraries/dc/dc.css') }}" rel='stylesheet' type='text/css'>
+
+	<style>
+		.axis path,
+		.axis line {
+		fill: none;
+		stroke: black;
+		shape-rendering: crispEdges;
+		}
+
+		.axis text {
+		font-family: sans-serif;
+		font-size: 11px;
+		}
+		</style>
+<style type="text/css">
+	h4 {
+		float: centre;
+		}
+
+	h4 span {
+		font-size:14px;
+		font-weight:normal;
+		}
+
+	h2 {
+		float: right;
+		}
+
+	h2 span {
+		font-size: 14px;
+		font-weight: normal;
+		}
+
+</style>
+</head>
+<body>
+<div class='container' style='font:12px sans-serif;'>
+<div class="row">
+<div class="dc-data-count" style="float: left;">
+	<h2> Ship Parameter Exploration Tool
+		<span>
+			<span class="filter-count"></span>
+			selected out of
+			<span class="total-count"></span>
+			records |
+			<a href="#" onclick="javascript:dc.filterAll(); dc.renderAll();">Reset All</a>
+		</span>
+	</h2>
+	<div style="float:right;">by <a href=mailto:ucemcfr@ucl.ac.uk> Christopher Ryan</a>, UCL, May 2016</div>
+</div>
+</div>
+<!--<div class="container page-form">-->
+	<!--<input type="number" id="loLWL" class="form-control" name="LoLWL">-->
+<!--</div>-->
+<div class='row'>
+	<div class='span3' id='dc-lwl-chart'>
+		<h4>LWL (m)
+		<span>
+		<a class="reset"
+		href="#" onclick="javascript:lwlChart.filterAll(); dc.redrawAll();"
+		style="display: none;">
+		reset
+		</a>
+		</span>
+		</h4>
+	</div>
+	<div class='span3' id='dc-beam-chart'>
+		<h4>Beam (m)
+		<span>
+		<a class="reset"
+		href="#" onclick="javascript:beamChart.filterAll(); dc.redrawAll();"
+		style="display: none;">
+		reset
+		</a>
+		</span>
+		</h4>
+	</div>
+	<div class='span3' id='dc-draft-chart'>
+		<h4>Draft (m)
+		<span>
+		<a class="reset"
+		href="#" onclick="javascript:draftChart.filterAll(); dc.redrawAll();"
+		style="display: none;">
+		reset
+		</a>
+		</span>
+		</h4>
+	</div>
+	<div class='span3' id='dc-disp-chart'>
+		<h4>Displacement (m<sup>3</sup>)
+		<span>
+		<a class="reset"
+		href="#" onclick="javascript:dispChart.filterAll(); dc.redrawAll();"
+		style="display: none;">
+		reset
+		</a>
+		</span>
+		</h4>
+	</div>
+	</div>
+	<div class="row">
+	<div class='span6' id='dc-res-chart'>
+		<h4>Resistance (kN)
+		<span>
+		<a class="reset"
+		href="#" onclick="javascript:resChart.filterAll(); dc.redrawAll();"
+		style="display: none;">
+		reset
+		</a>
+		</span>
+		</h4>
+	</div>
+	<div class='span6' id='dc-km-chart'>
+		<h4>KM (m)
+		<span>
+		<a class="reset"
+		href="#" onclick="javascript:kmChart.filterAll(); dc.redrawAll();"
+		style="display: none;">
+		reset
+		</a>
+		</span>
+		</h4>
+	</div>
+</div>
+	<div class="row">
+		<div class="span12" id="dc-perfPlot-scatt">
+		<h3>
+		Resistance vs KM
+		</h3>
+		</div>
+	</div>
+	<div class='row'>
+		<div class='span12'>
+			<table class='table table-hover' id='dc-table-graph'>
+				<thead>
+					<tr class='header'>
+						<th> Design Number</th>
+						<th> LWL (m)</th>
+						<th> Beam (m)</th>
+						<th> Draft (m)</th>
+						<th> Disp. Volume (m^3)</th>
+						<th> Waterplane coefficient</th>
+						<th> Bare Hull Resistance (kN)</th>
+						<th> KM (m)</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script src="../static/js/visualisation.js">
+</script>
+</body>
+</html>
+
