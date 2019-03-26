@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input ships to database</title>
+
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/d3/d3.min.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/crossfilter/crossfilter.min.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/dc/dc.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/jquery/jquery-2.2.3.min.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/bootstrap/js/bootstrap.min.js') }}"></script>
+    <link href="{{ url_for('static', filename='libraries/bootstrap/css/bootstrap.min.css') }}" rel='stylesheet' type='text/css'>
+    <link href="{{ url_for('static', filename='libraries/dc/dc.css') }}" rel='stylesheet' type='text/css'>
+
+    <style>
+            .axis path,
+            .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+            }
+
+            .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+            }
+        </style>
+    <style type="text/css">
+            h4 {
+                float: centre;
+                }
+
+            h4 span {
+                font-size:14px;
+                font-weight:normal;
+                }
+
+            h2 {
+                float: right;
+                }
+
+            h2 span {
+                font-size: 14px;
+                font-weight: normal;
+                }
+
+        </style>
+</head>
+
+<body>
+<!-- TODO this all needs looking at in more detail, watch the udemy videos back and check this is doing the right thing -->
+
+<div class="container">
+    <form id="save_ship_parameters" action="/ships/new" method="post">
+        <div class="form-group">
+            <label for="lwl">LWL (metres)</label>
+            <input type="number" id="lwl" class="form-control" name="lwl">
+        </div>
+
+        <div class="form-group">
+            <label for="loa">LOA (metres)</label>
+            <input type="number" id="loa" class="form-control" name="loa">
+        </div>
+
+        <div class="form-group">
+            <label for="bwl">BWL (metres)</label>
+            <input type="number" id="bwl" class="form-control" name="bwl">
+        </div>
+
+        <div class="form-group">
+            <label for="boa">BOA (metres)</label>
+            <input type="number" id="boa" class="form-control" name="boa">
+        </div>
+
+        <div class="form-group">
+            <label for="draft">Draft (metres)</label>
+            <input type="number" id="draft" class="form-control" name="draft">
+        </div>
+
+        <div class="form-group">
+            <label for="vol_disp">Volumetric displacement (metres cubed)</label>
+            <input type="number" id="vol_disp" class="form-control" name="vol_disp">
+        </div>
+
+        <div class="form-group">
+            <label for="lcb">LCB (units?)</label> <!-- TODO what units is this in? -->
+            <input type="number" id="lcb" class="form-control" name="lcb">
+        </div>
+
+        <div class="form-group">
+            <label for="vcb">VCB (units?)</label>  <!-- TODO what units is this in? -->
+            <input type="number" id="vcb" class="form-control" name="vcb">
+        </div>
+
+        <div class="form-group">
+            <label for="velocity">Design speed (units?)</label>  <!-- TODO what units is this in? -->
+            <input type="number" id="velocity" class="form-control" name="velocity">
+        </div>
+
+        <div class="form-group">
+            <label for="c_m">Midship coefficient</label>
+            <input type="number" id="c_m" class="form-control" name="c_m">
+        </div>
+
+        <div class="form-group">
+            <label for="c_wp">Waterplane coefficient</label>
+            <input type="number" id="c_wp" class="form-control" name="c_wp">
+        </div>
+
+        <div class="form-group">
+            <label for="heading">Heading (units?)</label> <!-- TODO what units is this in? -->
+            <input type="number" id="heading" class="form-control" name="heading">
+        </div>
+
+        <div class="form-group">
+            <label for="total_resistance">Total resistance (units?)</label> <!-- TODO what units is this in? -->
+            <input type="number" id="total_resistance" class="form-control" name="total_resistance">
+        </div>
+
+        <div class="form-group">
+            <label for="k_m">KM (metres)</label>
+            <input type="number" id="k_m" class="form-control" name="k_m">
+        </div>
+
+        <div class="form-group">
+            <label for="max_vert_acceleration">KM (metres)</label>
+            <input type="number" id="max_vert_acceleration" class="form-control" name="max_vert_acceleration">
+        </div>
+
+        <button type="submit" class="btn">Save to database</button>
+    </form>
+</div>
+
+</body>
+</html>

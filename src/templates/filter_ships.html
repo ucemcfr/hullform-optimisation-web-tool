@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input ships to database</title>
+
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/d3/d3.min.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/crossfilter/crossfilter.min.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/dc/dc.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/jquery/jquery-2.2.3.min.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='libraries/bootstrap/js/bootstrap.min.js') }}"></script>
+    <link href="{{ url_for('static', filename='libraries/bootstrap/css/bootstrap.min.css') }}" rel='stylesheet' type='text/css'>
+    <link href="{{ url_for('static', filename='libraries/dc/dc.css') }}" rel='stylesheet' type='text/css'>
+
+    <style>
+            .axis path,
+            .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+            }
+
+            .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+            }
+        </style>
+    <style type="text/css">
+            h4 {
+                float: centre;
+                }
+
+            h4 span {
+                font-size:14px;
+                font-weight:normal;
+                }
+
+            h2 {
+                float: right;
+                }
+
+            h2 span {
+                font-size: 14px;
+                font-weight: normal;
+                }
+
+        </style>
+</head>
+
+<body>
+
+<div class="container">
+    <form id="filter_ships" action="/ships/filter" method="post">
+        <div class="form-group">
+            <label for="low_lwl">Low LWL (metres)</label>
+            <input type="number" id="low_lwl" class="form-control" name="low_lwl">
+        </div>
+
+        <div class="form-group">
+            <label for="high_lwl">High LWL (metres)</label>
+            <input type="number" id="high_lwl" class="form-control" name="high_lwl">
+        </div>
+
+
+        <div class="form-group">
+            <label for="low_loa">Low LOA (metres)</label>
+            <input type="number" id="low_loa" class="form-control" name="low_loa">
+        </div>
+
+        <div class="form-group">
+            <label for="high_loa">High LOA (metres)</label>
+            <input type="number" id="high_loa" class="form-control" name="high_loa">
+        </div>
+
+        <div class="form-group">
+            <label for="low_bwl">Low BWL (metres)</label>
+            <input type="number" id="low_bwl" class="form-control" name="low_bwl">
+        </div>
+
+        <div class="form-group">
+            <label for="high_bwl">High BWL (metres)</label>
+            <input type="number" id="high_bwl" class="form-control" name="high_bwl">
+        </div>
+
+        <button type="submit" class="btn">Filter database</button>
+    </form>
+</div>
+
+</body>
+</html>

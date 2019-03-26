@@ -1,16 +1,28 @@
 import numpy as np
 
 
-def calculate_holtrop_resistance(lwl, bwl, draft, lcb, vol_disp, velocity, r_n, f_n, c_b, c_p, c_m, c_wp, rho, g):
-    c_f = 0.075 / ((np.log10(r_n) - 2) ** 2)
+def calculate_holtrop_resistance(lwl, bwl, draft, lcb, vol_disp, velocity, c_m, c_wp):
+    rho = 1.025  # TODO check units
+    g = 9.807
+    kin_visc = 1.19 * (10 ** -6)  # saltwater at 15 deg C
 
+    f_n = velocity / np.sqrt(g * lwl)
+
+    r_n = (velocity * lwl) / kin_visc
+
+    a_m = bwl * draft * c_m
+    c_b = vol_disp / (lwl * bwl * draft)
+    c_p = vol_disp / (a_m * lwl)
+
+    c_f = 0.075 / ((np.log10(r_n) - 2) ** 2) # TODO returning error "invalid value encountered in log10"
+# TODO how is lcb measured and used? In the Holtrop paper it is as % of lwl forward of midships
     c_stern = 0  # Normal section shape
     c14 = 1 + 0.011 * c_stern
     l_r = lwl * (1 - c_p + 0.06 * c_p * lcb / (4 * c_p - 1))
     # formFactor = 0.93 + 0.487118 * c14 * ((B/LWL)**1.06806) * ((T/LWL)**0.46106) * ((LWL/Lr)**0.121563*(
     # LWL**3/VolDisp)**0.36486) * ((1-Cp)**-0.604247)
     form_factor2 = 0.93 + 0.487118 * c14 * ((bwl / lwl) ** 1.06806) * ((draft / lwl) ** 0.46106) * (
-                (lwl / l_r) ** 0.121563) * (((lwl ** 3) / vol_disp) ** 0.36486) * ((1 - c_p) ** -0.604247)
+                (lwl / l_r) ** 0.121563) * (((lwl ** 3) / vol_disp) ** 0.36486) * ((1 - c_p) ** -0.604247) # TODO also get invalid value encountered in double scalars here sometimes
     wsa = lwl * (2 * draft + bwl) * (c_m ** 0.5) * (0.453 + 0.4425 * c_b - 0.2862 * c_m - 0.003467 * (
                 bwl / draft) + 0.3696 * c_wp)  # if bulb were being taken into account also include the following
     # term: (+ 2.38 * Abt / Cb)
@@ -18,13 +30,14 @@ def calculate_holtrop_resistance(lwl, bwl, draft, lcb, vol_disp, velocity, r_n, 
     r_f = 0.5 * rho * wsa * (velocity ** 2) * c_f
     r_v = r_f * form_factor2
 
-    a_bt = 0
+    a_bt = 0 # TODO look at these and correct them to be taken as inputs or to be estimated.
     a_t = 0
     h_b = 0
-    t_f = draft  # This isn't strictly true
+    t_f = draft  # TODO This isn't strictly true
 
-    i_e = 1 + 89 * np.exp(-((lwl / bwl) ** 0.80856) * ((1 - c_wp) ** 0.30484) * ((1 - c_p - 0.0225 * lcb) ** 0.6367) * (
-                (l_r / bwl) ** 0.34574) * ((100 * vol_disp / lwl ** 3) ** 0.16302))
+    # TODO sometimes this gives two runtime warnings: overflow encountered in exp, and invalid value encountered in double scalars, add appropriate error handling
+    i_e = 1 + 89 * np.exp(-((lwl / bwl) ** 0.80856) * ((1 - c_wp) ** 0.30484) * ((1 - c_p - 0.0225 * lcb) ** 0.6367) * ((l_r / bwl) ** 0.34574) * ((100 * vol_disp / lwl ** 3) ** 0.16302))
+    print ('lwl:  ', lwl, 'bwl:  ', bwl, 'cwp:  ', c_wp, 'cp:  ', c_p, 'lcb:  ', lcb, 'l_r:  ', l_r, 'vol disp:  ', vol_disp)
     d = -0.9
     c3 = 0.56 * a_bt ** 1.5 / (bwl * draft * (0.31 * a_bt ** (1 / 2) + t_f - h_b))
     c2 = np.exp(-1.89 * (c3 ** (1 / 2)))
@@ -47,9 +60,9 @@ def calculate_holtrop_resistance(lwl, bwl, draft, lcb, vol_disp, velocity, r_n, 
     else:
         c15 = 0
 
-    m4 = c15 * 0.4 * np.exp(-0.034 * f_n ** (-3.29))
+    m4 = c15 * 0.4 * np.exp(-0.034 * f_n ** (-3.29)) # TODO Returning error "invalid value encountered in double_scalars"
 
-    r_wb = c17 * c2 * c5 * vol_disp * rho * g * np.exp(m3 * f_n ** d + m4 * np.cos(lambda_ * f_n ** (-2)))
+    r_wb = c17 * c2 * c5 * vol_disp * rho * g * np.exp(m3 * f_n ** d + m4 * np.cos(lambda_ * f_n ** (-2))) # TODO this is returning error "invalid value encountered in double_scalars"
 
     if bwl / lwl < 0.11:
         c7 = 0.229577 * (bwl / lwl) ** 0.33333
@@ -70,7 +83,7 @@ def calculate_holtrop_resistance(lwl, bwl, draft, lcb, vol_disp, velocity, r_n, 
 
     m1 = 0.0140407 * lwl / draft - 1.75254 * vol_disp ** (1 / 3) / lwl - 4.79323 * bwl / lwl - c16
 
-    r_wa = c1 * c2 * c5 * vol_disp * rho * g * np.exp(m1 * f_n ** d + m4 * np.cos(lambda_ * f_n ** (-2)))
+    r_wa = c1 * c2 * c5 * vol_disp * rho * g * np.exp(m1 * f_n ** d + m4 * np.cos(lambda_ * f_n ** (-2))) # TODO this is returning an error, why? Error: "invalid value encountered in double_scalars"
 
     if f_n < 0.4:
         r_w = r_wa

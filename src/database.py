@@ -8,7 +8,7 @@ class Database(object):
     @staticmethod
     def initialize():
         client = pymongo.MongoClient(Database.URI)
-        Database.DATABASE = client['designs'] # what should the database be called?
+        Database.DATABASE = client['casebase'] # what should the database be called?
 
     @staticmethod
     def insert(collection, data):
